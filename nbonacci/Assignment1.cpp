@@ -21,11 +21,22 @@ long nbonacci(unsigned int series, unsigned int n){
 }
 
 void computeNbonacciRatio(std::string title, unsigned int series){
-    std::cout << "I am the computeNbonacciRatio function!\n";
+    double ratioDiff{1.0000000};
+    double currDiff{0};
+    unsigned int index{series + 1};
+    double prevRatio = nbonacci(series, index) / static_cast<double>(nbonacci(series, index - 1));
+    while(ratioDiff > .000001){
+        double currRatio = nbonacci(series, index + 1) / static_cast<double>(nbonacci(series, index));
+        ratioDiff = std::abs(currRatio - prevRatio);
+        index += 1;
+        if(ratioDiff <= .000001){
+            std::cout << title << " ratio approaches " << currRatio << " after " << index << " iterations\n";
+        }
+        prevRatio = currRatio;
+    }
 }
 
 int main(int argc, const char * argv[]) {
-    
     std::array<std::string, 4> naccis = {"Fibonacci", "Tribonacci", "Fourbonacci", "Fivebonacci"};
     
     for(int series{0}; series < 4; series++){
@@ -35,6 +46,10 @@ int main(int argc, const char * argv[]) {
             std::cout << output << " ";
         }
         std::cout << "\n";
+    }
+    std::cout << "\n";
+    for(int i{0}; i < 4; i++){
+        computeNbonacciRatio(naccis[i], i + 2);
     }
     return 0;
 }
